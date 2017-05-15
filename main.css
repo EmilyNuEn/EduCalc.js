@@ -5,3 +5,22 @@ header{
 	text-align: center;
 	font-family: verdana;
 }
+
+ul{
+	padding-left: 28%;
+	list-style-type: none;	
+}
+
+li{
+	padding-right: 5%;
+	padding-left: 5%;
+	display: inline;
+	text-align: center;
+	font-family: verdana;
+	align-self: center;
+}
+
+aside{
+	font-style: italic;
+	font-weight: normal;
+}
