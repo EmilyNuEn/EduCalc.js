@@ -24,3 +24,10 @@ aside{
 	font-style: italic;
 	font-weight: normal;
 }
+
+canvas{
+	height: 50%;
+	width: 90%;
+	padding-right: 5%;
+	padding-left: 5%;
+}
