@@ -7,7 +7,6 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolb
 # implement the default mpl key bindings
 from matplotlib.backend_bases import key_press_handler
 from py_expression_eval import Parser
-
 from matplotlib.figure import Figure
 
 import sys
