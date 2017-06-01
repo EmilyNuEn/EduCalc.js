@@ -15,7 +15,7 @@ if sys.version_info[0] < 3:
 else:
     import tkinter as Tk
 
-TIMER_DELAY = .5
+TIMER_DELAY = .25
 dt = .1
 parser = Parser()
 tick = 0
@@ -29,6 +29,7 @@ def incrementGraphs():
 
 
 def updateGraphs():
+    global canvas
     parametricGraph.plot(xVals, yVals, 'b')
     xGraph.plot(tVals, xVals, 'r')
     yGraph.plot(tVals, yVals, 'g')
