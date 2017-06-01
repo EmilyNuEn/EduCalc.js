@@ -1,6 +1,6 @@
 import matplotlib
 matplotlib.use('TkAgg')
-
+import matplotlib.lines as lines
 from numpy import arange, sin, pi
 import numpy as np
 import scipy
@@ -11,6 +11,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolb
 from matplotlib.backend_bases import key_press_handler
 from py_expression_eval import Parser
 from matplotlib.figure import Figure
+from textwrap import wrap
 
 import sys
 if sys.version_info[0] < 3:
@@ -65,14 +66,20 @@ def updatePlot():
     graph.set_ylim([-1.5, 1.5])
     graph.set_xlim([-0.5, 14.0])
     graph.plot(t, mathFunction(t, function, variable), 'b', t, mathFunction(t, taylorPolynomial, variable), 'r')
+    blue_legend_line = lines.Line2D([], [], color='blue', label="f(x) = " + function)
+    red_legend_line = lines.Line2D([], [], color='red', label="Taylor Polynomial of Degree " + str(polynomialDegree))
+    polynomialLabel = graph.set_title("\n".join(wrap("P(x) = " + taylorPolynomial, 100)))
+    graph.legend(handles=[blue_legend_line, red_legend_line])
     canvas.show()
     root.update_idletasks()
 
 def _updateEquation():
     global function
+
     newEquation = equationEditor.get("1.0", "end-1c")
     function = newEquation
     equationEditor.delete('1.0', "end")
+    resetPolynomial()
     updatePlot()
 
 def getNthDerivative(function, xLoc, degree):
@@ -89,12 +96,19 @@ def _addTermToPolynomial():
     taylorPolynomial += " + (" + str(getNthDerivative(function, 0, polynomialDegree)) + "*x^" + str(polynomialDegree) + "/" + str(sp.factorial(polynomialDegree, exact=True)) + ")"
     updatePlot()
 
+def resetPolynomial():
+    global taylorPolynomial, polynomialDegree
+    taylorPolynomial = getZerothPolynomial()
+    polynomialDegree = 0
+
 def checkForEnterButton(event):
 	if(event.keysym == 'Return'):
 		_updateEquation()
 
 def getZerothPolynomial():
     return str(mathFunction([0], function, variable)[0])
+
+
 
 polynomialDegree = 0
 taylorPolynomial = getZerothPolynomial()
@@ -107,6 +121,9 @@ functionLabel = Tk.Label(master=root, text='f(x)=')
 drawButton = Tk.Button(master=root, text='Graph', command=_updateEquation)
 stepButton = Tk.Button(master=root, text='Step', command=_addTermToPolynomial)
 quitButton = Tk.Button(master=root, text='Quit', command=_quit)
+blue_legend_line = lines.Line2D([],[], color='blue', label="f(x) = " + function)
+red_legend_line = lines.Line2D([], [], color='red', label="P(x) = " + taylorPolynomial)
+graph.legend(handles=[blue_legend_line, red_legend_line])
 functionLabel.pack(side=Tk.LEFT)
 equationEditor.pack(side=Tk.LEFT)
 drawButton.pack(side=Tk.RIGHT)

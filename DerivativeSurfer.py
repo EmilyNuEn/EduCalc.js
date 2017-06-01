@@ -19,7 +19,7 @@ else:
     import tkinter as Tk
 
 root = Tk.Tk()
-root.wm_title("Taylor Polynomials")
+root.wm_title("Derivative Surfer")
 
 
 parser = Parser()
@@ -40,8 +40,8 @@ def mathFunction(x, function, variable):
 f = Figure(figsize=(5, 4), dpi=100)
 graph = f.add_subplot(111)
 graph.grid(True)
-t = arange(0.0, 4 * np.pi, 0.01)
-function = "sin(x)"
+t = arange(1.0, 4 * np.pi, 0.01)
+function = "x^2"
 variable = 'x'
 
 graph.plot(t, mathFunction(t, function, variable))
@@ -56,12 +56,14 @@ toolbar = NavigationToolbar2TkAgg(canvas, root)
 toolbar.update()
 canvas._tkcanvas.pack(side=Tk.TOP, fill=Tk.BOTH, expand=1)
 
-TIME_DELAY = .25
+TIME_DELAY = .01
+xRange = np.arange(1.0, 14.0, .01)
+tangentRange = np.arange(-1, 0, .01)
 
 def init():
-    global t
-    for tNum in range(0, len(t)):
-        threading.Timer(TIME_DELAY*tNum, createNewTangent)
+    global xRange
+    for count in range(0, len(xRange)):
+        threading.Timer(TIME_DELAY*count, createNewTangent).start()
 
 def _quit():
     root.quit()     # stops mainloop
@@ -71,7 +73,7 @@ def updatePlot():
     global tangent
     graph.clear()
     graph.grid(True)
-    graph.plot(xRange, mathFunction(xRange, function, variable), 'b', t, mathFunction(tangentRange, tangent, variable), 'r')
+    graph.plot(xRange, mathFunction(xRange, function, variable), 'b', tangentRange, mathFunction(tangentRange, tangent, variable), 'r')
     canvas.show()
     root.update_idletasks()
 
@@ -84,19 +86,26 @@ def _updateEquation():
 
 def getDerivative(function, xLoc):
     derivativeExpression = sympy.diff(function, variable, 1)
-    return derivativeExpression.subs('x', xLoc)
+    return derivativeExpression.subs(variable, xLoc)
 
 def updateTangent(newX, newY):
     global tangent
+    print getDerivative(function, newX)
     tangent = str(getDerivative(function, newX)) + "*(x-" + str(newX) + ") + " + str(newY)
+    print tangent
 
 def createNewTangent():
+    print "in createNewTangent"
     global tangentRange, ticker
-    newX = t[ticker]
-    updateTangent(newX, parser.parse(function).evaluate({'x': newX}))
+    newX = xRange[ticker]
+    print newX
+    print function
+    newY = parser.parse(function).evaluate({variable: newX})
+    updateTangent(newX, newY)
     tangentRange = np.arange(newX - 1, newX + 1, .01)
-    updatePlot()
     ticker += 1
+    updatePlot()
+
 
 
 def checkForEnterButton(event):
@@ -114,8 +123,7 @@ equationEditor.pack(side=Tk.LEFT)
 drawButton.pack(side=Tk.RIGHT)
 quitButton.pack(side=Tk.RIGHT)
 root.bind("<KeyPress>", checkForEnterButton)
-xRange = np.arange(-0.5 , 14.0, .01)
-tangentRange = np.arange(-1, 0, .01)
+
 init()
 
 Tk.mainloop()
