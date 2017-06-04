@@ -92,7 +92,6 @@ def func(x):
 def _addTermToPolynomial():
     global polynomialDegree, taylorPolynomial
     polynomialDegree += 1
-    print getNthDerivative(function, 0, polynomialDegree)
     taylorPolynomial += " + (" + str(getNthDerivative(function, 0, polynomialDegree)) + "*x^" + str(polynomialDegree) + "/" + str(sp.factorial(polynomialDegree, exact=True)) + ")"
     updatePlot()
 

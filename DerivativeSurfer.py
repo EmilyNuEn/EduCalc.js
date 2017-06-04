@@ -54,12 +54,11 @@ toolbar.update()
 canvas._tkcanvas.pack(side=Tk.TOP, fill=Tk.BOTH, expand=1)
 
 stepSize = .25
-TIME_DELAY = .5;
+TIME_DELAY = .5
 xRange = np.arange(1.0, 14.0, stepSize)
 tangentRange = np.arange(-1, 0, stepSize)
 
 def init():
-    print("Initializing")
     global xRange
 
   # threading.Timer(1, createNewTangent).start()
@@ -107,13 +106,10 @@ def get_derivative(function, xLoc):
 
 def updateTangent(newX, newY):
     global tangent
-    print(get_derivative(function, newX))
     tangent = str(get_derivative(function, newX)) + "*(x-" + str(newX) + ") + " + str(newY)
-    print(tangent)
 
 
 def createNewTangent():
-    print("in createNewTangent")
     global tangentRange, ticker, parser, stepSize
     new_x = xRange[ticker]
     new_y = parser.parse(function).evaluate({variable: new_x})

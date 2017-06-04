@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+from matplotlib import pylab
 
 
 def data_gen(t=0):
@@ -20,6 +21,7 @@ def init():
     return line,
 
 fig, ax = plt.subplots()
+ax.set_title("f(x)= sin(2pi*t)^(-t/10)")
 line, = ax.plot([], [], lw=2)
 ax.grid()
 xdata, ydata = [], []
@@ -41,4 +43,6 @@ def run(data):
 
 ani = animation.FuncAnimation(fig, run, data_gen, blit=False, interval=10,
                               repeat=False, init_func=init)
+window = pylab.gcf()
+window.canvas.set_window_title("To Infinity")
 plt.show()
