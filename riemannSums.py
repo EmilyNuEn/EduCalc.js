@@ -33,7 +33,6 @@ parser = Parser()
 
 def mathFunction(x, function, variable):
     yVals = []
-    print function
     for xVal in x:
         try:
             yVals.append(parser.parse(function).evaluate({variable: xVal}))
@@ -79,7 +78,6 @@ def _updateEquation():
     global integralstep
     integralstep = 1.0;
     newEquation = equationEditor.get("1.0", "end-1c")
-    print "updateGraph triggered with equation: " + newEquation
     function = newEquation
     _updateGraph()
     equationEditor.delete('1.0', "end")
@@ -93,7 +91,7 @@ def _updateGraph():
         a.plot(t, mathFunction(t, function, variable))
         equationEditor.delete('1.0', "end")
         root.update_idletasks()
-        plotArea();
+        plotArea()
         canvas.show()
     except Exception as e:
         a.clear()
