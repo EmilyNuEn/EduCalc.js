@@ -1,14 +1,11 @@
 import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.lines as lines
-from numpy import arange, sin, pi
+from numpy import arange
 import numpy as np
-import scipy
 import sympy
-from scipy import misc as sp
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
 # implement the default mpl key bindings
-from matplotlib.backend_bases import key_press_handler
 from py_expression_eval import Parser
 from matplotlib.figure import Figure
 from textwrap import wrap
@@ -92,7 +89,7 @@ def func(x):
 def _addTermToPolynomial():
     global polynomialDegree, taylorPolynomial
     polynomialDegree += 1
-    taylorPolynomial += " + (" + str(getNthDerivative(function, 0, polynomialDegree)) + "*x^" + str(polynomialDegree) + "/" + str(sp.factorial(polynomialDegree, exact=True)) + ")"
+    taylorPolynomial += " + (" + str(getNthDerivative(function, 0, polynomialDegree)) + "*x^" + str(polynomialDegree) + "/" + str(sympy.factorial(polynomialDegree)) + ")"
     updatePlot()
 
 def resetPolynomial():
